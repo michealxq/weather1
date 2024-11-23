@@ -1,0 +1,73 @@
+<!--Made by Hasan Alhadad - 6191 & Ali Ramadan - 6236-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #h1 {
+            text-align: center; 
+            font-size: 24px;
+        }
+        #weatherInfo {
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <div id ="h1">
+        <h1>Weather Information</h1>
+    </div>
+    
+    <input type="text" id="city" placeholder="Enter city name" />
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="weatherInfo"></div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('city').value;
+            const url = (`https://weatherapiramadad-epbca3gtfnbkdwc7.westeurope-01.azurewebsites.net/api/Weather/${city}`); 
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('City not found');
+                }
+                const data = await response.json();
+                displayWeather(data);
+            } catch (error) {
+                document.getElementById('weatherInfo').innerHTML = error.message;
+            }
+        }
+
+        function displayWeather(data) {
+            const temperatureCelsius = data.temperature.toFixed(2);
+
+        const weatherInfo = `
+            <h2 style="text-align: center; " >Weather Information</h2>
+            <p>Temperature: ${temperatureCelsius} °C</p>                
+        `;
+        document.getElementById('weatherInfo').innerHTML = weatherInfo;
+        }
+    </script>
+
+</body>
